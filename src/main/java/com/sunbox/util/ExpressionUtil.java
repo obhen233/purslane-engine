@@ -40,8 +40,7 @@ import com.sunbox.producer.RuleProducer;
  *            基准值由{}包裹，{key:value}形式，参数与基准值有两个默认参数可以不加，如果参数 不加的话，默认使用基准值，有且仅有一个,如果只有key 冒号不能省略。
  * 6.参数使用：正常传值，列表或者是数组，用逗号隔开，字典值用| 每个值之间用逗号隔开
  * 7.@format格式化完成不允许出现的参数有 [ ] $ # ( ) { } 
- * 8. 对于冒号 : 冒号只对时间格式做了兼容，如果没有自定义参数，格式化时间里面带有冒号，必须前面加上： 例：{:2019-08-17 00:00:00} 
- * @throws Exception 
+ * 8. 对于冒号 : 冒号只对时间格式做了兼容，如果没有自定义参数，格式化时间里面带有冒号，必须前面加上： 例：{:2019-08-17 00:00:00}
  * **/
 
 
@@ -66,6 +65,8 @@ public class ExpressionUtil {
 		
 		Node node = formatNode(expression);
 		Root root = new Root();
+		if(node == null)
+			throw new ExpressionFormatException("expression exchange error");
 		List<Element> elements = node.getElements();
 		if(elements != null && elements.size() > 0){
 			root.setElements(elements);
@@ -78,7 +79,7 @@ public class ExpressionUtil {
 	private static String formatErrorExp(String expression){
 		int firstIndex = indexOfAlphabet(expression);
 		int lastIndex = lastIndexOfAlphabet(expression);
-		if(firstIndex == -1 || firstIndex == -1)
+		if(firstIndex == -1 || lastIndex == -1)
 			return "";
 		return expression.substring(firstIndex,lastIndex+1);	
 	}
@@ -304,7 +305,7 @@ public class ExpressionUtil {
 		if(ruleClass.getAnnotation(NoBase.class) != null ){
 			return;
 		}
-		Field[] fields = StringUtil.getAllFields(ruleClass);;
+		Field[] fields = StringUtil.getAllFields(ruleClass);
 		boolean managed = false;
 		for(Field f:fields){
 			f.setAccessible(true);
@@ -338,7 +339,7 @@ public class ExpressionUtil {
 		NoBase noBase = ruleClass.getAnnotation(NoBase.class);
 		if(noBase != null)
 			return list;
-		Field[] fields = StringUtil.getAllFields(ruleClass);;
+		Field[] fields = StringUtil.getAllFields(ruleClass);
 		for(Field f:fields){
 			f.setAccessible(true);
 			String name = f.getName();

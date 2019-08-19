@@ -5,7 +5,6 @@ import com.sunbox.annotation.framework.RuleBase;
 import com.sunbox.annotation.framework.RuleParam;
 import com.sunbox.attribute.Rule;
 
-@Description(desc="两数字之间对比大小的",lang="zh_cn")
 public class Between  extends Rule{
 
 	@RuleBase

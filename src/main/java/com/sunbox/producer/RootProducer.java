@@ -136,7 +136,7 @@ public class RootProducer {
 							Class<? extends Rule> ruleClass = anno.rule();
 							boolean not = anno.not();
 							Rule rule = ruleClass.newInstance();
-							Field[] fields = StringUtil.getAllFields(ruleClass);;
+							Field[] fields = StringUtil.getAllFields(ruleClass);
 							for(Field f: fields){
 								f.setAccessible(true);
 								String name = f.getName();
@@ -203,7 +203,7 @@ public class RootProducer {
 	}
 	
 	
-	private static void getElementsStr(List<Element> elements,SortedSet<String> sortSet ) throws Exception{
+	private static void getElementsStr(List<Element> elements,SortedSet<String> sortSet ){
 		if(elements != null && elements.size() > 0)
 		for(Element element : elements){
 			if("Node".equals(element.getClass().getSimpleName())){
@@ -227,7 +227,7 @@ public class RootProducer {
 	}
 	private static void getParamFields(Rule rule,SortedSet<String> sortSet){
 		Class<? extends Rule> clazz = rule.getClass();
-		Field[] fields = StringUtil.getAllFields(clazz);;
+		Field[] fields = StringUtil.getAllFields(clazz);
 		StringBuilder s = null;
 		String preKey = RuleProducer.getKeyByClassName(clazz.getName());
 		if(StringUtil.isBlank(preKey))
@@ -357,7 +357,7 @@ public class RootProducer {
 			else if(Leaf.class.equals(e.getClass())){
 				Leaf leaf = (Leaf)e;
 				List<Rule> rules = leaf.getRules();
-				if(rules == null && rules.size() <= 0)
+				if(rules == null || rules.size() <= 0)
 					return;
 				
 				for(Rule rule:rules){
@@ -372,7 +372,7 @@ public class RootProducer {
 	private static TreeSet<FeildInfo> getFeildInfo(Rule rule,String lang){
 		
 		Rule ru = null;
-		if(Nrule.class.equals(rule))
+		if(Nrule.class.equals(rule.getClass()))
 			ru = ((Nrule)rule).getRule();
 		ru = rule;
 		if(ru != null){

@@ -24,7 +24,7 @@ import com.sunbox.producer.RuleProducer;
 
 public class RootKeyUtil {
 	
-	static Logger logger = LoggerFactory.getLogger(RootKeyUtil.class);
+	private static Logger logger = LoggerFactory.getLogger(RootKeyUtil.class);
 	
 	public static String getkeyFromMap(Map param,String unid){
 		StringBuilder sb = new StringBuilder();
@@ -45,7 +45,7 @@ public class RootKeyUtil {
 		 return root;
 	}
 	
-	private static void setParamFields(List<Element> elements,Map<String,Object> param) throws Exception{
+	private static void setParamFields(List<Element> elements,Map<String,Object> param){
 		for(Element element:elements){
 			if(Node.class.isInstance(element)){
 				setParamFields(((Node)element).getElements(),param);

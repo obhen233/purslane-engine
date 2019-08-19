@@ -57,7 +57,7 @@ public class Leaf implements Element,Serializable {
 		this.result = result;
 	}
 	
-	public Leaf(){};
+	public Leaf(){}
 	
 	public Leaf(List<Rule> rules){
 		this.rules = rules;
@@ -217,7 +217,7 @@ public class Leaf implements Element,Serializable {
 			return excuteMsg;
 		
 		Class<Rule> ruleClass = (Class<Rule>) rule.getClass();
-		StringBuffer sb = new StringBuffer();  
+		StringBuilder sb = new StringBuilder();
 		String funcName = null;
 		sb.append("function :");
 		if(ruleClass.equals(Nrule.class)){
@@ -282,20 +282,14 @@ public class Leaf implements Element,Serializable {
 		}
 		if(baseList.size() > 0){
 			if(paramList.size() > 0) sb.append(",");
-			if(baseList.size() <= 0 &&  noBase == null){
+			for(int i = 0;i<baseList.size();i++){
+				if(i>0)sb.append(",");
 				sb.append("{");
-				sb.append((String)ReflectionUtil.invokeGet(rule, "base"));
+				Map<String,String> m = baseList.get(i);
+				sb.append(StringUtil.isNotBlank(m.get("value"))?m.get("value"):m.get("key"));
+				sb.append(":");
+				sb.append(m.get("base"));
 				sb.append("}");
-			}else{
-				for(int i = 0;i<baseList.size();i++){
-					if(i>0)sb.append(",");
-					sb.append("{");
-					Map<String,String> m = baseList.get(i);
-					sb.append(StringUtil.isNotBlank(m.get("value"))?m.get("value"):m.get("key"));
-					sb.append(":");
-					sb.append(m.get("base"));
-					sb.append("}");
-				}
 			}
 		}else{
 			String baseVal = null;

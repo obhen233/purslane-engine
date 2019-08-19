@@ -61,7 +61,7 @@ public class StringUtil {
 		if("java.util.Date".equals(clazz)){
 			DateFormat dateFormat = field.getAnnotation(DateFormat.class);
 			String format = dateFormat.value();
-			if(format == null || "".equals(format)){
+			if(StringUtil.isNotBlank(format)){
 				format = "yyyy-MM-dd HH:mm:ss";
 			}
 			try {
@@ -103,7 +103,7 @@ public class StringUtil {
 		if("java.util.Date".equals(clazz)){
 			DateFormat dateFormat = field.getAnnotation(DateFormat.class);
 			String format = dateFormat.value();
-			if(format == null || "".equals(format)){
+			if(StringUtil.isNotBlank(format)){
 				format = "yyyy-MM-dd HH:mm:ss";
 			}
 			return new SimpleDateFormat(format).format(value);
@@ -133,7 +133,7 @@ public class StringUtil {
 	}
 	
 	public static String formatMap(Map map){
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for(Object key:map.entrySet()){
 			if(isBaseDataType(key)){
 				sb.append(sb.length() > 0 ? ",":"");
@@ -187,7 +187,7 @@ public class StringUtil {
 								 k = formatBaseDataType(keyClassStr,kv[0]);
 								 v = formatBaseDataType(keyClassStr,kv[1]);
 							}else{
-								if(t.endsWith("//|") && kv.length < 1){
+								if(t.endsWith("//|") && kv.length <= 1){
 									 k = formatBaseDataType(keyClassStr,kv[0]);
 									 v = null;
 								}
@@ -255,7 +255,7 @@ public class StringUtil {
 	}
 	
 	public static String formatList(Collection list){
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for(Object key:list){
 			if(isBaseDataType(key)){
 				sb.append(sb.length() > 0 ? ",":"");
@@ -265,7 +265,7 @@ public class StringUtil {
 		return sb.toString();
 	}
 	public static String formatList(Object[] o){
-		return formatList(Arrays.asList(0));
+		return formatList(Arrays.asList(o));
 	}
 	private static Collection parseList(String text,Field field){
 		String classStr = "java.lang.String";
@@ -419,19 +419,7 @@ public class StringUtil {
 
         return trimmed.substring(splashIndex);
     }
-    
-    public static boolean containsDefultTime(String str){
-    	if(isBlank(str)) return false;
-    	//String timeRegex = ".*((([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29))\\s+([0-1]?[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])+.*";
-    	String timeRegex = ".*(((([0-1][0-9])|(2?[0-3]))\\:([0-5]?[0-9])((\\s)|(\\:([0-5]?[0-9])))))+.*";
-    	return str.matches(timeRegex);
-    }
-    
-    public static boolean containsDefultDate(String str){
-    	if(isBlank(str)) return false;
-    	String timeRegex = ".*((([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29))\\s+([0-1]?[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])+.*";
-    	return str.matches(timeRegex);
-    }
+
     
     //[ ] $ # ( ) { } 
     public static boolean containKeyWord(String content){

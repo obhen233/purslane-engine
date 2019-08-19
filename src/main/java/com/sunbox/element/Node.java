@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sunbox.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,6 +58,9 @@ public class Node implements Element,Serializable {
 			List<Object> excuteResultList = new ArrayList<Object>();
 			for(Element e:elements){
 				ExcuteResult er = e.excute();
+				if(er.getFormatMsg() != null || StringUtil.isNotBlank(er.getFormatMsg().toString())){
+					excuteResultList.add(er.getFormatMsg());
+				}
 				sb.append(sb.length() > 0 ? " AND " :"");
 				sb.append(er.getFormatMsg());
 				if(er.isResult()){
@@ -66,7 +70,6 @@ public class Node implements Element,Serializable {
 					return excuteResult;
 				}
 			}
-			boolean isStr = true;
 			for(Object obj : excuteResultList){
 				if(!String.class.equals(obj.getClass())){
 					ExcuteResult excuteResult = new ExcuteResult();
@@ -94,20 +97,12 @@ public class Node implements Element,Serializable {
 	}
 	
 	private void elementsToStr(StringBuilder sb,List<Element> elements){
-		boolean allNode = true;
 		if(elements == null || elements.size() <= 0)
 			return;
-		for(Element element:elements){
-			if((Leaf.class).isInstance(element)){
-				allNode = false;
-				break;
-			}
+		for(int i = 0;i<elements.size();i++){
+			sb.append((elements.get(i)).toString());
 		}
-		if(elements != null && elements.size() > 0){
-			for(int i = 0;i<elements.size();i++){
-				sb.append((elements.get(i)).toString());
-			}
-		}
+
 	}
 	
 	@Override

@@ -3,6 +3,7 @@ package com.sunbox.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import com.sunbox.exception.FeidNofindException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +37,8 @@ public class ReflectionUtil {
             	objectClass = objectClass.getSuperclass();
             	field = objectClass.getDeclaredField(fieldName);
             }
+            if(field == null)
+                throw new FeidNofindException(objectClass+"no find field "+fieldName);
             parameterTypes[0] = field.getType();  
             StringBuffer sb = new StringBuffer();  
             sb.append("set");  
