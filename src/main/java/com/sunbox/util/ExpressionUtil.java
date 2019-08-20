@@ -314,9 +314,16 @@ public class ExpressionUtil {
 				continue;
 			managed = true;
 			String paramValue = ruleBase.value();
+			String base = ruleBase.base();
 			String name = f.getName();
 			if(key.equals(StringUtil.isNotBlank(paramValue)?paramValue:name)){
-				ReflectionUtil.invokeSet(rule, name, StringUtil.StringToField(value, f));
+				if(StringUtil.isNotBlank(value))
+					ReflectionUtil.invokeSet(rule, name, StringUtil.StringToField(value, f));
+				else{
+					if(StringUtil.isNotBlank(base))
+						ReflectionUtil.invokeSet(rule, name, StringUtil.StringToField(base, f));
+				}
+
 			}
 		}
 		if(!managed){

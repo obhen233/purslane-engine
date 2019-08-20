@@ -18,7 +18,7 @@ public class Engine {
 	
 	public static Object doExcute(Map<String,Object> param,String unid) throws Exception{
 		String key = RootKeyUtil.getkeyFromMap(param, unid);
-		Root root = RootProducer.getInstance().getRootByKey(key);
+		Root root = RootProducer.getRootByKey(key);
 		RootKeyUtil.setRootFields(root,param);
 		return root.excute().getFormatMsg();
 		
