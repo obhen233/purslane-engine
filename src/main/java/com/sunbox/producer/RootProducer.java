@@ -132,8 +132,9 @@ public class RootProducer {
 				Node node = null;
 				Leaf leaf = null;
 				Bud bud = null;
-				if (ec.equals(Node.class)) {
-					com.sunbox.annotation.application.Node n = ec.getAnnotation(com.sunbox.annotation.application.Node.class);
+				com.sunbox.annotation.application.Node n = ec.getAnnotation(com.sunbox.annotation.application.Node.class);
+				com.sunbox.annotation.application.Leaf l = ec.getAnnotation(com.sunbox.annotation.application.Leaf.class);
+				if (n!= null) {
 					List<Element> list = formatAnnotation(n.elements());
 					if (list != null && list.size() > 0) {
 						node = new Node();
@@ -142,11 +143,12 @@ public class RootProducer {
 				}
 				if (ec.equals(Bud.class)) {
 					bud = new Bud();
-				} else if (ec.equals(Leaf.class)) {
+				}
+				if (l!= null) {
 					leaf = new Leaf();
 					List<Rule> rules = new ArrayList<Rule>();
 					leaf.setRules(rules);
-					com.sunbox.annotation.application.Leaf l = ec.getAnnotation(com.sunbox.annotation.application.Leaf.class);
+
 					com.sunbox.annotation.application.Rule[] ruleAnnos = l.value();
 					if (ruleAnnos != null && ruleAnnos.length > 0) {
 						for (com.sunbox.annotation.application.Rule anno : ruleAnnos) {
