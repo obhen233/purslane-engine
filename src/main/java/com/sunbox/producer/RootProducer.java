@@ -369,7 +369,7 @@ public class RootProducer {
 		return deleteRoot(key);
 	}
 
-	public List<RootParam> getRootsParam(String lang) {
+	public static List<RootParam> getRootsParam(String lang) {
 		List<RootParam> rootParams = new ArrayList<RootParam>();
 		if (storePlugin != null && SynchStorePlugin.class.isInstance(storePlugin)) {
 			for (Root r : ((SynchStorePlugin)storePlugin).getRoots()) {
@@ -394,11 +394,11 @@ public class RootProducer {
 		return rootParams;
 	}
 
-	public List<RootParam> getRootsParam() {
+	public static List<RootParam> getRootsParam() {
 		return getRootsParam("zh_cn");
 	}
 
-	private void getFeildInfo(List<Element> elements, TreeSet<FeildInfo> feildInfos, String lang) {
+	private static void getFeildInfo(List<Element> elements, TreeSet<FeildInfo> feildInfos, String lang) {
 		if (elements == null || elements.size() <= 0)
 			return;
 		for (Element e : elements) {
