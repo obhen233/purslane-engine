@@ -84,10 +84,7 @@ public class RuleProducer {
 		 }
 		return true;
 	}
-	
-	public static void main(String[] args) throws Exception {
-		RuleProducer.inntProducer();
-	}
+
 	
 
 	private static boolean notExistRule(String key){
@@ -181,7 +178,8 @@ public class RuleProducer {
 	    ruleInfo.setLang(lang);
 	    List<FeildInfo> feildInfoList = new ArrayList<FeildInfo>();
 	    ruleInfo.setFeilds(feildInfoList);
-	    for(Field field :StringUtil.getAllFields(ruleClass)){
+	    Field[] fields = StringUtil.getAllFields(ruleClass);
+	    for(Field field :fields){
 	    	FeildInfo feildInfo = new FeildInfo();
 	    	RuleParam ruleParam = field.getDeclaredAnnotation(RuleParam.class);
 	    	RuleBase ruleBase = field.getDeclaredAnnotation(RuleBase.class);
@@ -213,7 +211,7 @@ public class RuleProducer {
 	    	}else{
 
 	    		if("base".equals(fieldName)){
-	    			if(noBase == null){
+	    			if(noBase == null && needBase(fields)){
 	    				feildInfo.setSimpleName(fieldName);
 						StringBuilder fieldSb = new StringBuilder();
 						feildInfo.setName(fieldSb.append(className).append(".").append(fieldName).toString());
@@ -223,7 +221,7 @@ public class RuleProducer {
 	    	    		feildInfoList.add(feildInfo);
 	    			}
 	    		}else if("param".equals(fieldName)){
-					if(noParam == null) {
+					if(noParam == null && needParam(fields)) {
 						feildInfo.setSimpleName(fieldName);
 						StringBuilder fieldSb = new StringBuilder();
 						feildInfo.setName(fieldSb.append(className).append(".").append(fieldName).toString());
@@ -252,5 +250,21 @@ public class RuleProducer {
 		return getFeildInfo("zh_cn");
 	}
 	
-	
+	private static boolean needBase(Field[] fields){
+		for(Field field:fields) {
+            RuleBase ruleBase = field.getDeclaredAnnotation(RuleBase.class);
+            if (ruleBase != null)
+                return false;
+        }
+        return true;
+	}
+    private static boolean needParam(Field[] fields){
+        for(Field field:fields) {
+            RuleParam ruleParam = field.getDeclaredAnnotation(RuleParam.class);
+            if (ruleParam != null)
+                return false;
+        }
+        return true;
+    }
+
 }
