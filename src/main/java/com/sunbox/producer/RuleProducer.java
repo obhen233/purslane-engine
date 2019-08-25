@@ -211,6 +211,7 @@ public class RuleProducer {
 	    		feildInfo.setValue(fieldBase);
 	    		feildInfoList.add(feildInfo);
 	    	}else{
+
 	    		if("base".equals(fieldName)){
 	    			if(noBase == null){
 	    				feildInfo.setSimpleName(fieldName);
@@ -222,13 +223,15 @@ public class RuleProducer {
 	    	    		feildInfoList.add(feildInfo);
 	    			}
 	    		}else if("param".equals(fieldName)){
-	    			feildInfo.setSimpleName(fieldName);
-					StringBuilder fieldSb = new StringBuilder();
-					feildInfo.setName(fieldSb.append(className).append(".").append(fieldName).toString());
-    	    		feildInfo.setDesc(StringUtil.getDescription(ruleClass, field, lang));
-    	    		feildInfo.setLang(lang);
-    	    		feildInfo.setFieldType(FieldType.param);
-    	    		feildInfoList.add(feildInfo);
+					if(noParam == null) {
+						feildInfo.setSimpleName(fieldName);
+						StringBuilder fieldSb = new StringBuilder();
+						feildInfo.setName(fieldSb.append(className).append(".").append(fieldName).toString());
+						feildInfo.setDesc(StringUtil.getDescription(ruleClass, field, lang));
+						feildInfo.setLang(lang);
+						feildInfo.setFieldType(FieldType.param);
+						feildInfoList.add(feildInfo);
+					}
 	    		}
 	    	}
 	    }

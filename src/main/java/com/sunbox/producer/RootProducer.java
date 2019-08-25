@@ -348,7 +348,7 @@ public class RootProducer {
 		return insertRoot(root, false);
 	}
 
-	public boolean deleteRoot(String key) throws Exception {
+	public static boolean deleteRoot(String key) throws Exception {
 
 		if (storePlugin != null && SynchStorePlugin.class.isInstance(storePlugin)) {
 			return ((SynchStorePlugin) storePlugin).deleteRoot(getRootByKey(key));
@@ -360,7 +360,7 @@ public class RootProducer {
 		}
 	}
 
-	public boolean deleteRoot(Root root) throws Exception {
+	public static boolean deleteRoot(Root root) throws Exception {
 		String unid = root.getUnid();
 		if (StringUtil.isBlank(unid)) {
 			throw new UnidNullException("insert Root error");
@@ -478,7 +478,7 @@ public class RootProducer {
 		return null;
 	}
 
-	public List<RootParam> getRootByUnid(String unid, String lang) {
+	public static List<RootParam> getRootParamByUnid(String unid, String lang) {
 		if (StringUtil.isBlank(unid))
 			return null;
 		List<RootParam> rootParams = new ArrayList<RootParam>();
@@ -516,8 +516,8 @@ public class RootProducer {
 		return rootParams;
 	}
 
-	public List<RootParam> getRootByUnid(String unid) {
-		return getRootByUnid(unid, "zh_cn");
+	public static List<RootParam> getRootParamByUnid(String unid) {
+		return getRootParamByUnid(unid, "zh_cn");
 	}
 
 
@@ -557,6 +557,17 @@ public class RootProducer {
 				RootProducer.saveRoots();
 			}
 		},1000,saveSec);
+	}
+
+	public static List<Root> getRoots(){
+		if (storePlugin != null) {
+			return storePlugin.getRoots();
+		}
+		List<Root> roots = new ArrayList<Root>(engineMap.size());
+		for(Entry<String,Root> entry:engineMap.entrySet()){
+			roots.add(deepClone(entry.getValue()));
+		}
+		return roots;
 	}
 	
 }
