@@ -47,15 +47,7 @@ import com.sunbox.producer.RuleProducer;
 public class ExpressionUtil {
 	
 	private static Logger logger = LoggerFactory.getLogger(ExpressionUtil.class);
-	static{
-		try {
-			RuleProducer.inntProducer();
-		} catch (Exception e) {
-			logger.error("innt rule error.",e);
-		}
-	}
 
-	
 	public static boolean testExpression(String expression) throws Exception{
 		Node node = formatNode(expression);
 		return node != null;
