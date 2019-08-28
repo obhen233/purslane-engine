@@ -421,10 +421,9 @@ public class RootProducer {
 
 	private static TreeSet<FeildInfo> getFeildInfo(Rule rule, String lang) {
 
-		Rule ru = null;
+		Rule ru = rule;
 		if (Nrule.class.equals(rule.getClass()))
 			ru = ((Nrule) rule).getRule();
-		ru = rule;
 		if (ru != null) {
 			Function function = ru.getClass().getDeclaredAnnotation(Function.class);
 			String ruleFunctionName = null;
@@ -591,5 +590,4 @@ public class RootProducer {
 		}
 		return true;
 	}
-
 }
