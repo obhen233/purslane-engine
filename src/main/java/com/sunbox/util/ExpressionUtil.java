@@ -142,8 +142,8 @@ public class ExpressionUtil {
 										throw new ExpressionFormatException("only have one # :"+rulestr);
 									}
 								}
-								int leftIndexBrace = rulesStr.indexOf("{");
-								int reghtIndexBrace = rulesStr.indexOf(")")-1;
+								int leftIndexBrace = rulestr.indexOf("{");
+								int reghtIndexBrace = rulestr.indexOf(")")-1;
 								if(leftIndexBrace != -1 && reghtIndexBrace != -1){
 									NoBase noBase = rule.getClass().getAnnotation(NoBase.class);
 									if(noBase != null)
