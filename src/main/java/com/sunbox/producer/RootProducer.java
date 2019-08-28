@@ -275,11 +275,14 @@ public class RootProducer {
 					s = new StringBuilder();
 					sortSet.add(s.append(preKey).append(".").append(key).toString());
 				}
+			}else{
+				hasCustomizeBase = true;
 			}
 		}
 		if (!hasCustomizeParam && !isNoParam) {
 			Object o = ReflectionUtil.invokeGet(rule, "param");
 			if (o == null) {
+				s = new StringBuilder();
 				sortSet.add(s.append(preKey).append(".").append("param").toString());
 			}
 		}
@@ -287,6 +290,7 @@ public class RootProducer {
 		if (!hasCustomizeBase && !isNoBase) {
 			Object o = ReflectionUtil.invokeGet(rule, "base");
 			if (o == null) {
+				s = new StringBuilder();
 				sortSet.add(s.append(preKey).append(".").append("base").toString());
 			}
 		}
@@ -582,8 +586,8 @@ public class RootProducer {
 		}
 		return true;
 	}
-	private static boolean needParam(Field[] fields){
-		for(Field field:fields) {
+	private static boolean needParam(Field[] fields) {
+		for (Field field : fields) {
 			RuleParam ruleParam = field.getDeclaredAnnotation(RuleParam.class);
 			if (ruleParam != null)
 				return false;

@@ -60,9 +60,11 @@ public class StringUtil {
 			return new BigDecimal(value);
 		if("java.util.Date".equals(clazz)){
 			DateFormat dateFormat = field.getAnnotation(DateFormat.class);
-			String format = dateFormat.value();
-			if(StringUtil.isNotBlank(format)){
-				format = "yyyy-MM-dd HH:mm:ss";
+			String format = "yyyy-MM-dd HH:mm:ss";
+			if(dateFormat != null) {
+				if (StringUtil.isNotBlank(dateFormat.value())) {
+					format = dateFormat.value();
+				}
 			}
 			try {
 				return new SimpleDateFormat(format).parse(value);
@@ -102,9 +104,11 @@ public class StringUtil {
 			return null;
 		if("java.util.Date".equals(clazz)){
 			DateFormat dateFormat = field.getAnnotation(DateFormat.class);
-			String format = dateFormat.value();
-			if(StringUtil.isNotBlank(format)){
-				format = "yyyy-MM-dd HH:mm:ss";
+			String format = "yyyy-MM-dd HH:mm:ss";
+			if(dateFormat != null) {
+				if (StringUtil.isNotBlank(dateFormat.value())) {
+					format = dateFormat.value();
+				}
 			}
 			return new SimpleDateFormat(format).format(value);
 		}

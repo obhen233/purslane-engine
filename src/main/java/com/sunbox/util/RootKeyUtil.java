@@ -32,7 +32,8 @@ public class RootKeyUtil {
 		SortedMap<String,Object> sortMap = new TreeMap<String,Object>();
 		sortMap.putAll(param);
 		for(Object key : sortMap.keySet()){
-			sb.append("&").append(key);
+			if(!"unid".equals(key))
+				sb.append("&").append(key);
 		}
 		return CodingUtil.MD5(sb.toString());
 	}
