@@ -16,6 +16,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import com.sunbox.plugin.AsyncStorePlugin;
 import com.sunbox.plugin.StorePlugin;
 import com.sunbox.plugin.SynchStorePlugin;
+import com.sunbox.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -41,10 +42,6 @@ import com.sunbox.exception.UnidNullException;
 import com.sunbox.out.FeildInfo;
 import com.sunbox.out.FieldType;
 import com.sunbox.out.RootParam;
-import com.sunbox.util.CodingUtil;
-import com.sunbox.util.PackageScanner;
-import com.sunbox.util.ReflectionUtil;
-import com.sunbox.util.StringUtil;
 
 public class RootProducer {
 
@@ -414,7 +411,8 @@ public class RootProducer {
 
 				for (Rule rule : rules) {
 					TreeSet<FeildInfo> infos = getFeildInfo(rule, lang);
-					if (feildInfos != null && feildInfos.size() > 0)
+					if (feildInfos == null)
+						feildInfos = new TreeSet<FeildInfo>();
 						feildInfos.addAll(infos);
 				}
 			}
@@ -440,7 +438,8 @@ public class RootProducer {
 			sb.append(ruleClassName.substring(1));
 			String className = (StringUtil.isNotBlank(ruleFunctionName)) ? ruleFunctionName : sb.toString();
 			TreeSet<FeildInfo> feildInfos = new TreeSet<FeildInfo>();
-			for (Field field : StringUtil.getAllFields(ru.getClass())) {
+			Field[] fields = StringUtil.getAllFields(ru.getClass());
+			for (Field field :fields) {
 				Object objValue = ReflectionUtil.invokeGet(ru, field.getName());
 				if (objValue != null)
 					continue;
@@ -448,6 +447,11 @@ public class RootProducer {
 				if (field != null) {
 					FeildInfo feildInfo = new FeildInfo();
 					field.setAccessible(true);
+					if("base".equals(field.getName()) && (!needBase(fields) || noBase != null))
+						continue;
+					if("param".equals(field.getName()) && (!needParam(fields) || noParam != null))
+						continue;
+
 					String fieldValue = null;
 					RuleBase ruleBase = field.getDeclaredAnnotation(RuleBase.class);
 					RuleParam ruleParam = field.getDeclaredAnnotation(RuleParam.class);
@@ -569,5 +573,23 @@ public class RootProducer {
 		}
 		return roots;
 	}
-	
+
+
+	private static boolean needBase(Field[] fields){
+		for(Field field:fields) {
+			RuleBase ruleBase = field.getDeclaredAnnotation(RuleBase.class);
+			if (ruleBase != null)
+				return false;
+		}
+		return true;
+	}
+	private static boolean needParam(Field[] fields){
+		for(Field field:fields) {
+			RuleParam ruleParam = field.getDeclaredAnnotation(RuleParam.class);
+			if (ruleParam != null)
+				return false;
+		}
+		return true;
+	}
+
 }
