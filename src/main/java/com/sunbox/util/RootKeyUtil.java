@@ -81,8 +81,8 @@ public class RootKeyUtil {
 			if(o == null){
 				RuleParam ruleParam = f.getDeclaredAnnotation(RuleParam.class);
 				RuleBase ruleBase = f.getDeclaredAnnotation(RuleBase.class);
-				NoParam noParam = f.getDeclaredAnnotation(NoParam.class);
-				NoBase noBase = f.getDeclaredAnnotation(NoBase.class);
+				NoParam noParam = (NoParam)clazz.getDeclaredAnnotation(NoParam.class);
+				NoBase noBase = (NoBase)clazz.getDeclaredAnnotation(NoBase.class);
 				if(ruleParam != null && noParam == null){
 					String value = ruleParam.value();
 					String key = StringUtil.isNotBlank(value)?value:name;
