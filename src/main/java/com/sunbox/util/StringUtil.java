@@ -310,8 +310,7 @@ public class StringUtil {
 				instance = (List)Class.forName(typeName).newInstance();
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.getStackTrace();
-				logger.info("parseMap#2",e);
+				logger.warn("parseMap#2",e);
 				instance  = new ArrayList();
 			}
 			if(isBlank(text))

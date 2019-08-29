@@ -266,7 +266,8 @@ public class Leaf implements Element,Serializable {
 					Map<String,String> m = new HashMap<String,String>();
 					m.put("value", value);
 					m.put("key", baseName);
-					m.put("base", StringUtil.isNotBlank(base)?base:StringUtil.formatFieldValue(ReflectionUtil.invokeGet(rule, baseName),field));
+					String baseValue = StringUtil.formatFieldValue(ReflectionUtil.invokeGet(rule, baseName),field);
+					m.put("base", StringUtil.isNotBlank(baseValue)?baseValue:base);
 					baseList.add(m);
 				}
 			}
@@ -292,20 +293,12 @@ public class Leaf implements Element,Serializable {
 				sb.append("}");
 			}
 		}else{
-			String baseVal = null;
-			try {
-				baseVal = StringUtil.formatFieldValue(ReflectionUtil.invokeGet(rule, "base"),rule.getClass().getDeclaredField("base"));
-			} catch (NoSuchFieldException e) {
-				logger.error("NoSuchFieldException", e);
-			} catch (SecurityException e) {
-				logger.error("SecurityException", e);
-			}
-			if(StringUtil.isNotBlank(baseVal)){
+			Object baseVal = ReflectionUtil.invokeGet(rule, "base");
+			if(baseVal != null && StringUtil.isNotBlank(baseVal.toString())){
 				if(paramList.size() > 0) sb.append(",");
-				sb.append("{").append(baseVal).append("}");
+				sb.append("{").append(baseVal.toString().contains(":")?":":"").append(baseVal).append("}");
 			}
 		}
-		if(baseList.size() > 0 && paramList.size() > 0)
 		sb.append(")");
 		sb.append(" excute false,");
 		if(paramList.size() > 0){
@@ -315,7 +308,13 @@ public class Leaf implements Element,Serializable {
 				Map<String,String> m = paramList.get(i);
 				String paramVal = null;
 				try {
-					paramVal = StringUtil.formatFieldValue(ReflectionUtil.invokeGet(rule, m.get("key")),rule.getClass().getDeclaredField( m.get("key")));
+					if(!"param".equals(m.get("key")))
+						paramVal = StringUtil.formatFieldValue(ReflectionUtil.invokeGet(rule, m.get("key")),rule.getClass().getDeclaredField( m.get("key")));
+					else{
+						Object p = ReflectionUtil.invokeGet(rule, "param");
+						if(p == null)
+							paramVal = p.toString();
+					}
 				} catch (NoSuchFieldException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -326,18 +325,12 @@ public class Leaf implements Element,Serializable {
 				sb.append(StringUtil.isNotBlank(paramVal)?paramVal:"null");
 			}
 		}else{
-			if(noBase == null){
+			if(noParam == null){
 				sb.append(" param is:"); 
 				String paramVal = null;
-				try {
-					paramVal = StringUtil.formatFieldValue(ReflectionUtil.invokeGet(rule, "param"),rule.getClass().getDeclaredField("param"));
-				} catch (NoSuchFieldException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				Object p = ReflectionUtil.invokeGet(rule, "param");
+				if(p != null)
+					paramVal = p.toString();
 				sb.append(StringUtil.isNotBlank(paramVal)?paramVal:"null");
 			}else{
 				sb.append(" the function is none param");

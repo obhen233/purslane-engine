@@ -31,7 +31,7 @@ public class ReflectionUtil {
             try{
             	field = objectClass.getDeclaredField(fieldName);
             }catch(Exception ex){
-            	logger.error("getSetMethod",ex); 
+            	logger.warn("getSetMethod",ex);
             }
             while(field == null && objectClass != null){	
             	objectClass = objectClass.getSuperclass();
