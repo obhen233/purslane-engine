@@ -7,17 +7,11 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.sunbox.producer.RuleProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -277,7 +271,8 @@ public class StringUtil {
 			if(ParameterizedType.class.isInstance(field.getGenericType())){
 				ParameterizedType type = (ParameterizedType)field.getGenericType();
 				Type[] arguments =  type.getActualTypeArguments();
-				if(arguments!= null && arguments.length >1){
+				if(arguments!= null && arguments.length >0){
+					System.out.println(arguments[0].getTypeName());
 					classStr = arguments[0].getTypeName();
 				}
 			}
@@ -312,7 +307,7 @@ public class StringUtil {
 		if(typeName.endsWith("List")){
 			List instance = null;
 			try {
-				instance = (List)Class.forName(type.getTypeName()).newInstance();
+				instance = (List)Class.forName(typeName).newInstance();
 			}catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.getStackTrace();
@@ -505,6 +500,5 @@ public class StringUtil {
     	Field[] fields = new Field[fieldList.size()];
     	return fieldList.toArray(fields);
     }
-    
-   
+
 }
