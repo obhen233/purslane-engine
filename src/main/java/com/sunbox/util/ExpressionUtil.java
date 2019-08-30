@@ -1,12 +1,8 @@
 package com.sunbox.util;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Stack;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -271,8 +267,15 @@ public class ExpressionUtil {
 				}
 				baseStr = baseStr.substring((baseStr.length() >= reghtIndexBrace+2)?reghtIndexBrace+2:baseStr.length(),baseStr.length());
 			}else{
-				if(baseList.size() >= 0)
-					throw new ExpressionFormatException("base size not match " + rule.getClass().getSimpleName() + " has " +baseList.size() + "but expression has null.");
+				if(baseList.size() > 0) {
+					if (baseList.size() != 1) {
+						throw new ExpressionFormatException("base size not match " + rule.getClass().getSimpleName() + " has " + baseList.size() + "but expression has null.");
+					} else if (!"base".equals(baseList.get(0))) {
+						throw new ExpressionFormatException(rule.getClass().getSimpleName() + " need base by find " + baseList.get(0));
+					}
+				}
+				manageMap.put("base",null);
+				break;
 			}
 			
 		}
@@ -498,6 +501,10 @@ public class ExpressionUtil {
 		return elements;
 	}
 	public static void main(String[] args) throws Exception {
-		
+		Properties properties = new Properties();
+		properties.setProperty("rule-scan","com.sunbox.util");
+		RuleProducer.inntProducer(properties);
+		String ex = "[[[$strEuqal({})]]]";
+		System.out.println(ExpressionUtil.expression2Root(ex));
 	}
 }
