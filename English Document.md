@@ -1,5 +1,5 @@
 ## [Chinese Document](https://github.com/obhen233/purslane-engine/blob/master/%E4%B8%AD%E6%96%87%E6%8F%8F%E8%BF%B0.md)|English Document ##
-# I Standard Rules Expression:#
+# I Standard Rules Expression: #
 1. **Elements:** A set of [] means an Element, Element includes Node and Leaf.Node makes up by Nodes,Leaves.Leaf contains Functions.
 2. **Rules:** Relationships between Elements are "and" or "or". The following is defined: If an element is composed entirely of Node, then the relationship between Nodes is "or". If there is a leaf, then between elements the relationship is "and".
 3. **Unusual Element:** Bud is an Element that always returns true.This is to deal with the fact that the elements are completely composed of Node, but the nodes must be connected with "and". The Root element is the root element, all The starting point of the element.
