@@ -20,7 +20,7 @@ The above expression Root consists of three Nodes. The first Node consists of tw
 7. **Annotations:** There are two types of annotations. One is the use of the framework (under the framework package), and the other is the use of annotation rules (under the application package)
    - **Framework Package:**  
      1. **@DateFormat** Used in the Rule reference value or parameter, format the time format into a string and format the string into time. The default is yyyy-MM-dd HH:mm:ss
-     2. **@Formator** used in the benchmark reference value or parameter value is a Formator class, this is to customize the formatting type, formatted into the standard rule expression, can also be reversed into objects from the standard regular expression. Inherit com.sunbox.formator.Formator, implement parse and format 
+     2. **@Formator** used in the benchmark reference value or parameter value is a Formator class, this is to customize the formatting type, formatted into the standard rule expression, can also be reversed into objects from the standard regular expression. Inherit Formator, implement parse and format 
      3. **@Function** is used on the Rule class to format the name. If you do not use the default Rule name, the first letter of the class name is the expression function name. Require the only item in the project.
      4. **@NoBase** is used on the Rule class to indicate that the Rule is a rule with no reference value, for example, the date is greater than the current time.
      5. **@NoParam** is used on the Rule class to indicate that the Rule is a rule with no parameters, such as a limited day.
