@@ -5,11 +5,3 @@ A rule engine,easy to expand,and easy to use .
 
 Demo in  https://github.com/obhen233/engineDemo.git
 
-use in maven:
-    `
-    ` <dependency> `
-      ` <groupId>com.github.obhen233</groupId> `
-      ` <artifactId>purslane-engine</artifactId> `
-      ` <version>0.01</version> `
-    ` </dependency> `
- 
